@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 아래 탭중에 NameSpaces 눌러서 context 체크하면됨  -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+	
+	<!-- test용 하나만듬  -->
+	
+	
+	<!-- 모든 controller의 경로 표시  -->
+	<context:component-scan base-package="com.member.anno"></context:component-scan>
+	
+	
+	<!-- 여기부터 진짜  -->
+	<!-- DB 셋팅 JNDI 설정 -->
+	<bean id="ds" class="org.springframework.jndi.JndiObjectFactoryBean">
+	<property name="jndiName">
+		<value>jdbc/spring</value>
+	</property>
+	<property name="resourceRef" value="true"/>
+	</bean>
+	
+	<!-- DB 셋팅중 template 설정  -->
+	<bean id="template" class="org.springframework.jdbc.core.JdbcTemplate">
+	<property name="dataSource" ref="ds"/>
+	</bean>
+	
+	<!-- 경로를 고정시켜놓음으로써 풀경로를 안쓰고 마지막 jsp파일 이름만 쓰면 알아서 찾아 갈수 있게 설정 -->
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+	<property name="prefix" value="WEB-INF/view/"/> <!--view/ view아래까지 표시해야함  -->
+	<property name="suffix" value=".jsp"/>	
+	</bean>
+	
+
+
+</beans>
